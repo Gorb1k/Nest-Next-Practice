@@ -11,7 +11,7 @@ export class TrackController {
 
     @Get()
     getAll() {
-        return 'WORK!'
+        return 'Настройка Гит!'
     }
     getOne() {}
     delete() {}
