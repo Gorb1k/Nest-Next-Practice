@@ -39,4 +39,9 @@ export class TrackController {
         return this.trackService.addComment(dto)
     }
 
+    @Get('listening/:id')
+    incrementListening(@Param('id') id: ObjectId) {
+        return this.trackService.incrementListening(id)
+    }
+
 }

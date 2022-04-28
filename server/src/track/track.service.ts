@@ -41,4 +41,10 @@ export class TrackService {
         return comment
     }
 
+    async incrementListening(id:ObjectId) {
+        const track = await this.trackRepository.findById(id)
+        track.listening++
+        track.save()
+    }
+
 }
