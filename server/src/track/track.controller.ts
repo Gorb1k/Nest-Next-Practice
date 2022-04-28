@@ -5,6 +5,7 @@ import {ObjectId} from "mongoose";
 import {CreateCommentDto} from "./dto/create-comment.dto";
 import {FileFieldsInterceptor} from "@nestjs/platform-express";
 
+
 @Controller('track')
 export class TrackController {
 
@@ -14,7 +15,7 @@ export class TrackController {
     @Post()
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'picture', maxCount: 1 },
-        { name: 'audio', maxCount: 1 },
+        { name: 'audio', maxCount: 1 }
     ]))
     create(@UploadedFiles() files, @Body() dto: CreateTrackDto) {
         const {picture, audio} = files
