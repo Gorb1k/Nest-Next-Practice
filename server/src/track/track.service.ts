@@ -21,7 +21,7 @@ export class TrackService {
         const track  = await this.trackRepository.create({...dto, listening: 0, audio: audioPath, picture: picturePath})
         return track
     }
-    async getAll(): Promise<Track[]> {
+    async getAll(count, offset): Promise<Track[]> {
         const tracks = await this.trackRepository.find()
         return tracks
     }
