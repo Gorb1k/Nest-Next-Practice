@@ -21,8 +21,14 @@ export class TrackService {
         const track  = await this.trackRepository.create({...dto, listening: 0, audio: audioPath, picture: picturePath})
         return track
     }
-    async getAll(count, offset): Promise<Track[]> {
-        const tracks = await this.trackRepository.find()
+    async getAll(count=10, offset=0): Promise<Track[]> {
+        const tracks = await this.trackRepository.find().skip(Number(offset)).limit(Number(count))
+        return tracks
+    }
+    async search(query:string): Promise<Track[]> {
+        const tracks = await this.trackRepository.find({
+            name: {$regex: new RegExp(query, 'i')}
+        })
         return tracks
     }
     async getOne(id:ObjectId): Promise<Track> {
