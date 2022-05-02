@@ -10,11 +10,11 @@ const TrackPage = () => {
     const router = useRouter()
 
     return (
-        <MainLayout key={track._id}>
+        <MainLayout>
             <Button
                 variant={'outlined'}
                 style={{fontSize: 32}}
-                onClick={() => router.push('tracks')}
+                onClick={() => router.push('/tracks')}
             >
                 Back to the list
             </Button>
@@ -35,7 +35,7 @@ const TrackPage = () => {
                 <Button>Send</Button>
             </Grid>
             <div>
-                {track.comments.map((comment) => <div>
+                {track.comments.map((comment) => <div key={comment._id}>
                     <div>Author: {comment.username}</div>
                     <div>Comment: {comment.text}</div>
                 </div>)}
