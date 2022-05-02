@@ -10,7 +10,7 @@ const TrackPage = () => {
     const router = useRouter()
 
     return (
-        <MainLayout>
+        <MainLayout key={track._id}>
             <Button
                 variant={'outlined'}
                 style={{fontSize: 32}}
