@@ -1,29 +1,84 @@
-import React from 'react';
+import React, {ChangeEvent, useEffect} from 'react';
 import {Pause, PlayArrow, VolumeUp} from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import styles from '../styles/Player.module.scss'
 import {ITrack} from "../types/track";
 import {Grid} from "@mui/material";
 import TrackProgress from "./TrackProgress";
+import {useTypeSelector} from "../hooks/useTypeSelector";
+import {useActions} from "../hooks/useActions";
+
+
+let audio;
 
 const Player = () => {
-    const track: ITrack = {_id:'1', artist:'Artist1', audio: 'http://localhost:5000/audio/1111.mp3', listenings: 5, picture: 'http://localhost:5000/image/1111.jpg', comments: [{_id: '1', username: 'Gorbik', text: 'OLOLO'}], name: 'track1', text: 'lyrics1'}
-    const active = false
+
+    const {active, volume, duration, currentTime, pause } = useTypeSelector(state => state.player)
+    const {playTrack, pauseTrack, setVolume, setActiveTrack, setDuration, setCurrentTime} = useActions()
+
+    useEffect(() => {
+        console.log(active)
+        if (!audio) {
+            audio = new Audio()
+            console.log(audio)
+        } else {
+            setAudio()
+            play()
+        }
+    },[active])
+
+    const setAudio = () => {
+        if (active) {
+            audio.src = active.audio
+            audio.volume = volume/100
+            audio.onloadedmetadata = () => {
+                setDuration(Math.ceil(audio.duration))
+            }
+            audio.ontimeupdate = () => {
+                setCurrentTime(Math.ceil(audio.currentTime))
+            }
+        }
+    }
+
+    const play = () => {
+
+        if (pause) {
+            playTrack()
+            audio.play()
+        } else {
+            pauseTrack()
+            audio.pause()
+        }
+    }
+
+    const changeVolume = (e:ChangeEvent<HTMLInputElement>) => {
+        audio.volume = Number(e.target.value)/100
+        setVolume(Number(e.target.value))
+    }
+    const changeCurrentTime = (e:ChangeEvent<HTMLInputElement>) => {
+        audio.currentTime = Number(e.target.value)
+        setCurrentTime(Number(e.target.value))
+    }
+
+    if (!active) {
+        return null
+    }
+
     return (
         <div className={styles.player}>
-            <IconButton onClick={(e) => e.stopPropagation()}>
-                {active
+            <IconButton onClick={play}>
+                {!pause
                     ? <Pause/>
                     : <PlayArrow/>
                 }
             </IconButton>
             <Grid container direction={'column'} style={{width: 200, margin: '0 20px'}}>
-                <div>{track.name}</div>
-                <div style={{fontSize: 12, color: 'gray'}}>{track.artist}</div>
+                <div>{active?.name}</div>
+                <div style={{fontSize: 12, color: 'gray'}}>{active?.artist}</div>
             </Grid>
-            <TrackProgress left={0} right={100} onChange={() => {}}/>
+            <TrackProgress left={currentTime} right={duration} onChange={changeCurrentTime}/>
             <VolumeUp style={{marginLeft: "auto"}}/>
-            <TrackProgress left={0} right={100} onChange={() => {}}/>
+            <TrackProgress left={volume} right={100} onChange={changeVolume}/>
         </div>
     );
 };

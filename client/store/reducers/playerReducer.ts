@@ -6,7 +6,7 @@ const initialState:PlayerState = {
     currentTime:0,
     duration:0,
     active:null,
-    volume:0,
+    volume:50,
     pause: true
 }
 
