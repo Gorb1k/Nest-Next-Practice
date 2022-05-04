@@ -1,17 +1,25 @@
-import React from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import MainLayout from "../../layouts/MainLayout";
-import {Box, Button, Card, Grid} from "@mui/material";
+import {Box, Button, Card, Grid, TextField} from "@mui/material";
 import {useRouter} from "next/router";
 import TrackList from "../../components/TrackList";
 import {useTypeSelector} from "../../hooks/useTypeSelector";
-import { wrapper} from "../../store";
-import {fetchTracks} from "../../store/action-creators/track";
+import {AppDispatch, wrapper} from "../../store";
+import {fetchTracks, searchTrack} from "../../store/action-creators/track";
+import {useDispatch} from "react-redux";
 
 
 const Index = () => {
 
     const router = useRouter()
     const {tracks, error} = useTypeSelector(state => state.tracks)
+    const [query, setQuery] = useState<string>('')
+    const dispatch = useDispatch<AppDispatch>()
+
+    const search = async (e: ChangeEvent<HTMLInputElement>) => {
+        setQuery(e.target.value)
+        await dispatch(await searchTrack(e.target.value))
+    }
 
     if (error) {
         return <MainLayout>
@@ -29,6 +37,9 @@ const Index = () => {
                             <Button onClick={() => router.push('/tracks/create')}>Upload</Button>
                         </Grid>
                     </Box>
+                    <TextField fullWidth value={query} onChange={search}
+
+                    />
                     <TrackList tracks={tracks}/>
                 </Card>
             </Grid>
@@ -39,14 +50,11 @@ const Index = () => {
 export default Index;
 
 
-
-export const getServerSideProps = wrapper.getServerSideProps( store => async (context) => {
+export const getServerSideProps = wrapper.getServerSideProps(store => async (context) => {
     const dispatch = store.dispatch
-    await dispatch( await fetchTracks())
+    await dispatch(await fetchTracks())
     return {
-        props: {
-
-        }
+        props: {}
     }
 })
 
