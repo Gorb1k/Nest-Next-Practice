@@ -1,5 +1,7 @@
 import {PlayerAction, PlayerActionTypes, PlayerState} from "../../types/player";
 import {Action} from "redux";
+import {createSlice} from "@reduxjs/toolkit";
+import {HYDRATE} from "next-redux-wrapper";
 
 
 const initialState:PlayerState = {
@@ -29,3 +31,28 @@ export const playerReducer = (state = initialState, action: PlayerAction): Playe
             return state
     }
 }
+
+// export const playerSlice = createSlice({
+//     name: 'player',
+//     initialState,
+//     reducers: {
+//         playTrack: (state, action) => {
+//             state.pause = false
+//         },
+//         pauseTrack: (state, action) => {
+//             state.pause = true
+//         },
+//         setDuration: (state, action) => {
+//             state.duration = action.payload
+//         },
+//         setCurrentTime: (state, action) => {
+//             state.currentTime = action.payload
+//         },
+//         setVolume: (state, action) => {
+//             state.volume = action.payload
+//         },
+//         setActive: (state, action) => {
+//             state.active = action.payload
+//         }
+//     }
+// })
