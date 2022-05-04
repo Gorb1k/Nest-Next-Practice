@@ -27,7 +27,10 @@ const TrackPage = ({serverTrack}) => {
     }
 
     return (
-        <MainLayout>
+        <MainLayout
+            title={'Music platform - '+ track.name + ' - ' + track.artist}
+            keywords={'music, track, ' + track.name + ', ' + track.artist}
+        >
             <Button
                 variant={'outlined'}
                 style={{fontSize: 32}}

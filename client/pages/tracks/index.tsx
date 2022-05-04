@@ -20,7 +20,7 @@ const Index = () => {
     }
 
     return (
-        <MainLayout>
+        <MainLayout title={'Track-list'} description={'Track-list of the most popular songs in the world'}>
             <Grid container justifyContent={'center'}>
                 <Card style={{width: 900}}>
                     <Box p={3}>

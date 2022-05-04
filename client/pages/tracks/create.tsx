@@ -63,7 +63,7 @@ const Create = () => {
             step = <h1>Some Error</h1>
     }
     return (
-        <MainLayout>
+        <MainLayout title={'Upload track'}>
             <StepWrapper activeStep={activeStep}>
                 {step}
             </StepWrapper>
