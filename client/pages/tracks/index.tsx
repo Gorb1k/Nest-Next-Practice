@@ -14,11 +14,18 @@ const Index = () => {
     const router = useRouter()
     const {tracks, error} = useTypeSelector(state => state.tracks)
     const [query, setQuery] = useState<string>('')
+    const [timer, setTimer] = useState(null)
     const dispatch = useDispatch<AppDispatch>()
 
     const search = async (e: ChangeEvent<HTMLInputElement>) => {
         setQuery(e.target.value)
-        await dispatch(await searchTrack(e.target.value))
+        if (timer) {
+            clearTimeout(timer)
+        }
+        setTimer(setTimeout(async () => {
+            await dispatch(await searchTrack(e.target.value))
+        }, 500))
+
     }
 
     if (error) {
